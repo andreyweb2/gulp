@@ -1,4 +1,4 @@
-const {src, dest} = require('gulp')
+const {src, dest, series, watch} = require('gulp')
 const sass = require('gulp-sass')
 const csso = require('gulp-csso')
 const include = require('gulp-file-include')
@@ -33,5 +33,19 @@ function scss(){
     .pipe(dest('dist'))//Возврацаем результат в папку src
 }
 
-exports.html = html //Сборка HTML файлов
-exports.scss = scss //Сборка css файлов
+/*Чистим файлы */
+function clear() {
+  return del('dist')
+}
+
+function serve() {
+  sync.init({
+    server:'./dist'
+  })
+  watch('src/**.html', series(html)).on('change', sync.reload)
+  watch('src/scss/**.scss', series(scss)).on('change', sync.reload)
+}
+
+exports.build = series(clear, scss, html)
+exports.serve = series(clear, scss, html, serve)
+exports.clear = clear //Читим папку
