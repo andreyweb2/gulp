@@ -1,0 +1,7 @@
+const {src, dest} = require('gulp')
+const sass = require('gulp-sass')
+const csso = require('gulp-csso')
+const include = require('gulp-file-include')
+const htmlmin = require('gulp-html')
+const del = require('del')
+const sync = require('browser-sync').create()
